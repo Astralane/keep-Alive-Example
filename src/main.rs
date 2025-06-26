@@ -17,7 +17,7 @@ use tokio::time::Instant;
 
 const ASTRALANE_TIP_ADDR: &str = "astra4uejePWneqNaJKuFFA8oonqCE1sqF6b45kDMZm";
 const ASTRALANE_TIP_AMOUNT: u64 = 1_000_000;
-const ASTRALANE_URL: &str = "http://fr.gateway.astralane.io/iris";
+const ASTRALANE_URL: &str = "http://fr.gateway.astralane.io";
 const ASTRALANE_API_KEY: &str = "VERY VERY SECRET";
 
 const SOLANA_MAINNET_URL: &str = "https://api.mainnet-beta.solana.com";
@@ -99,7 +99,7 @@ async fn send_txn_with_keep_alive() -> Result<(), Box<dyn std::error::Error>> {
     let body = txn_payload_builder(&keypair, recent_blockhash).await?;
     let time = Instant::now();
     let _res = client
-        .post(ASTRALANE_URL)
+        .post(format!("{}/iris", ASTRALANE_URL))
         .header("api_key", ASTRALANE_API_KEY)
         .json(&body)
         .send()
@@ -118,7 +118,7 @@ async fn send_txn_with_keep_alive() -> Result<(), Box<dyn std::error::Error>> {
     let body = txn_payload_builder(&keypair, recent_blockhash).await?;
     let time = Instant::now();
     let _res = client
-        .post(ASTRALANE_URL)
+        .post(format!("{}/iris", ASTRALANE_URL))
         .header("api_key", ASTRALANE_API_KEY)
         .json(&body)
         .send()
