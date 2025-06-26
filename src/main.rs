@@ -83,16 +83,6 @@ async fn txn_payload_builder(
     Ok(body)
 }
 
-fn get_health_payload() -> Value {
-    let body = json!({
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "getHealth",
-    });
-
-    body
-}
-
 async fn send_txn_with_keep_alive() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::builder()
         .pool_idle_timeout(Some(Duration::from_secs(85))) // Keep connections alive for 85
@@ -119,9 +109,8 @@ async fn send_txn_with_keep_alive() -> Result<(), Box<dyn std::error::Error>> {
 
     tokio::time::sleep(Duration::from_secs(5)).await;
     let _res = client
-        .post(ASTRALANE_URL)
+        .get(format!("{}/gethealth", ASTRALANE_URL))
         .header("api_key", ASTRALANE_API_KEY)
-        .json(&get_health_payload())
         .send()
         .await?;
     println!("send getHealth to keep connection alive");
